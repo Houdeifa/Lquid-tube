@@ -15,7 +15,7 @@ class Tube:
     # violet, jaune, gris, orange, marron, bleu ciel, vert bleu, rouge, bleu, vert , rose, vert claire
     self.ColorsArray = ((83, 0, 150),(251, 255, 0), (150, 150, 150),(255, 123, 0),(92, 44, 0),(0, 194, 224),(0, 255, 191),(255, 47, 0),(13, 0, 255),(0, 82, 18),(255, 0, 157), (112, 255, 105))
     self.canPlay = -2 #-2 = cant play , -1 can play any color, other = color that can play
-    self.selected = -1 #-1 = not selected, other = color that is selected
+    self.selectedColor = -1 #-1 = not selected, other = color that is selected
   
   
   def check(self):
@@ -37,17 +37,17 @@ class Tube:
             if(self.colors[1] == -1):
                 if(self.colors[2] == -1):
                     if(self.colors[3] == -1):
-                        self.selected = -1
+                        self.selectedColor = -1
                     else:
-                        self.selected = self.colors[3]
+                        self.selectedColor = self.colors[3]
                 else:
-                   self.selected = self.colors[2]
+                   self.selectedColor = self.colors[2]
             else:
-                self.selected = self.colors[1]
+                self.selectedColor = self.colors[1]
         else:
-            self.selected = self.colors[0]
+            self.selectedColor = self.colors[0]
   def unsel(self):
-    self.selected = -1
+    self.selectedColor = -1
   def setColors(self,C1,C2,C3,C4):
     self.colors = [C1,C2,C3,C4]
     

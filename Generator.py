@@ -25,7 +25,7 @@ class Generator:
             self.tube_boxes.append(Tube(i,w,h,x,y))
         ColorMatrix = self.generateRandomMatrix()
         self.assignColors(ColorMatrix, self.tube_boxes)
-        self.Sel.append(Selector(self.tube_boxes[0].width/2,self.tube_boxes[0].height/6, self.tube_boxes[0].x + self.tube_boxes[0].width/4 , self.tube_boxes[0].y - self.tube_boxes[0].height/3))
+        self.SelectionHat = Selector(self.tube_boxes[0].width/2,self.tube_boxes[0].height/6, self.tube_boxes[0].x + self.tube_boxes[0].width/4 , self.tube_boxes[0].y - self.tube_boxes[0].height/3)
         
         
     def getRandomIndex(self):

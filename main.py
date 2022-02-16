@@ -14,7 +14,7 @@ screen = pygame.display.set_mode((width, height))
   
 # Game loop.
 gen = Generator(screen)
-GM = GameManager(gen)
+gM = GameManager(gen)
 while True:
   screen.fill((0, 0, 0))
   events = pygame.event.get()
@@ -24,8 +24,8 @@ while True:
       sys.exit()
   
   # Update.
-  GM.update(events)
+  gM.update(events)
   # Draw.
-  GM.draw()
+  gM.draw()
   pygame.display.flip()
   fpsClock.tick(fps)
