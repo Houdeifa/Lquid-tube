@@ -100,7 +100,24 @@ class Tube:
         m = min(4,n)
         for i in range(m):
             self.colors[i] = -1  
-
+  def canPutColors(self,C,n):
+        if(self.colors[0] != -1):
+            return False
+        if(self.colors[1] == C and n == 1):
+            return True
+        if(self.colors[1] != -1):
+            return False
+        if(self.colors[2] == C and n <= 2):
+            return True
+        if(self.colors[2] != -1):
+            return False
+        if(self.colors[3] == C  and n <= 3):
+            return True
+            
+        if(self.colors[3] != -1):
+            return False
+        if( n <= 4):
+            return True
 
   def putColors(self,C,n):
         if(self.colors[0] != -1):

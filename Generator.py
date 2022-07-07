@@ -41,6 +41,7 @@ class Generator:
             else:
                 ColorMatrix = self.generateRandomMatrix()
         self.assignColors(ColorMatrix)
+        self.ColorMatrix = ColorMatrix
         self.SelectionHat = Selector(self.tube_boxes[0].width/2,self.tube_boxes[0].height/6, self.tube_boxes[0].x + self.tube_boxes[0].width/4 , self.tube_boxes[0].y - self.tube_boxes[0].height/3)
         
         
@@ -73,7 +74,17 @@ class Generator:
         return ColorMat
     def assignColors(self,ColorMatrix_s):
         for i in range(12):
-             self.tube_boxes[i].colors = ColorMatrix_s[i]
-    def getColors(self):
-        for i in range(12):
-            self.ColorMatrix[i] = self.tube_boxes[i].colors
+            for j in range(4):
+                self.tube_boxes[i].colors[j] = ColorMatrix_s[i][j]
+    def assignColorsToAll(self,fullMatrix):
+        for i in range(14):
+            for j in range(4):
+                self.tube_boxes[i].colors[j] = fullMatrix[i][j]
+    def getColors(self) -> list:
+        fullStateMatrix = []
+        for i in range(14):
+            currentTub = []
+            for j in range(4):
+                currentTub.append(self.tube_boxes[i].colors[j])
+            fullStateMatrix.append(currentTub)
+        return fullStateMatrix

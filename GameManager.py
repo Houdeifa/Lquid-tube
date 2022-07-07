@@ -8,6 +8,9 @@ class GameManager:
         self.gen = gen
         self.UI = UI(gen.screen,gen)
         self.UI.createBackButton()
+        self.savedStates = []
+        # print("len(self.savedStates) = ",len(self.savedStates),"=> ", self.savedStates)
+
 
     def eventListner(self,events):
         pos = pygame.mouse.get_pos()
@@ -16,14 +19,14 @@ class GameManager:
                 self.gen.SelectionHat.setPos(self.gen.tube_boxes[i].x,self.gen.tube_boxes[i].y)
         for event in events:
             if event.type == pygame.MOUSEBUTTONUP:
-                print("clicked")
-                print("--------------------------------------------")
+                # print("clicked")
+                # print("--------------------------------------------")
                 Unselect_bool = False
                 for i in range(7*2):
                     if self.gen.tube_boxes[i].isHover(pos):
                         self.gen.tube_boxes[i].sel()
-                        print("str(tube_boxes[i].selected) = " + str(self.gen.tube_boxes[i].selectedColor))
-                        print("str(Sel[0].selected) = " + str(self.gen.SelectionHat.isSelected))
+                        # print("str(tube_boxes[i].selected) = " + str(self.gen.tube_boxes[i].selectedColor))
+                        # print("str(Sel[0].selected) = " + str(self.gen.SelectionHat.isSelected))
                         if(self.gen.tube_boxes[i].selectedColor != -1):
                             self.gen.SelectionHat.setPos(self.gen.tube_boxes[i].x,self.gen.tube_boxes[i].y)
                             Unselect_bool = True
@@ -31,12 +34,14 @@ class GameManager:
                         if(self.gen.SelectionHat.isSelected == False):
                             self.gen.SelectionHat.select((self.gen.tube_boxes[i].selectedColor,self.gen.tube_boxes[i]))
                         else:
-                            print("putColor test")
-                            print("gen.SelectionHat.selectedTube.NBlockSelected => ",self.gen.SelectionHat.selectedTube.NBlockSelected)
-                            print("self.gen.SelectionHat.selectedColor => ",self.gen.SelectionHat.selectedColor)
-                            if self.gen.tube_boxes[i].putColors(self.gen.SelectionHat.selectedColor,self.gen.SelectionHat.selectedTube.NBlockSelected):
-                                print("str(Sel[0].selected[0][1].index) = " + str(self.gen.SelectionHat.selectedTube.index))
-                                print("i = " + str(i))
+                            # print("putColor test")
+                            # print("gen.SelectionHat.selectedTube.NBlockSelected => ",self.gen.SelectionHat.selectedTube.NBlockSelected)
+                            # print("self.gen.SelectionHat.selectedColor => ",self.gen.SelectionHat.selectedColor)
+                            if self.gen.tube_boxes[i].canPutColors(self.gen.SelectionHat.selectedColor,self.gen.SelectionHat.selectedTube.NBlockSelected):
+                                self.saveCurrentState()
+                                self.gen.tube_boxes[i].putColors(self.gen.SelectionHat.selectedColor,self.gen.SelectionHat.selectedTube.NBlockSelected)
+                                # print("str(Sel[0].selected[0][1].index) = " + str(self.gen.SelectionHat.selectedTube.index))
+                                # print("i = " + str(i))
                                 self.gen.tube_boxes[self.gen.SelectionHat.selectedTube.index].removeColors(self.gen.SelectionHat.selectedTube.NBlockSelected)
                                 Unselect_bool = False
                                 self.gen.tube_boxes[i].unsel()
@@ -48,18 +53,29 @@ class GameManager:
                 if not Unselect_bool:
                     self.gen.SelectionHat.unselect()
                     self.gen.tube_boxes[i].unsel()
-                    print("unselected")
-                print("str(tube_boxes[i].selected) = " + str(self.gen.tube_boxes[i].selectedColor))
-                print("str(Sel[0].selected) = " + str(self.gen.SelectionHat.isSelected))
+                    # print("unselected")
+                # print("str(tube_boxes[i].selected) = " + str(self.gen.tube_boxes[i].selectedColor))
+                # print("str(Sel[0].selected) = " + str(self.gen.SelectionHat.isSelected))
 
                 if(self.UI.isBackBHovred(pos)):
-                    print("right Place")
+                    # print("right Place")
+                    self.loadLasttState()
     def update(self,events):
         for i in range(7*2):
             self.gen.tube_boxes[i].playingCheck()
         self.eventListner(events)
     def Play(self,source,destination_index):
         pass
+    def saveCurrentState(self):
+        stateList = self.gen.getColors()
+        self.savedStates.append(stateList)
+    def loadLasttState(self):
+        # print("len(self.savedStates) = ",len(self.savedStates),"=> ", self.savedStates)
+        if(len(self.savedStates) == 0):
+            return
+        colorMatrix = self.savedStates.pop()
+        self.gen.assignColorsToAll(colorMatrix)
+        # print("len(self.savedStates) = ",len(self.savedStates),"=> ", self.savedStates)
     def draw(self):
         for i in range(7*2):
             self.gen.tube_boxes[i].draw(self.gen.screen)
