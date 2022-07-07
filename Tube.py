@@ -68,7 +68,7 @@ class Tube:
         return
     if(self.colors[0] == self.colors[1] and self.colors[1] == self.colors[2] and self.colors[2] == self.colors[3]):
         self.NBlockSelected = 4
-    elif (self.colors[0] == self.colors[1] and self.colors[1] == self.colors[3]):
+    elif (self.colors[0] == self.colors[1] and self.colors[1] == self.colors[2]):
         self.NBlockSelected = 3
     elif (self.colors[0] == self.colors[1]):
         self.NBlockSelected = 2

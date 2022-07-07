@@ -1,3 +1,4 @@
+from operator import ge
 import sys
 
 import pygame
@@ -20,6 +21,9 @@ while True:
   events = pygame.event.get()
   for event in events:
     if event.type == QUIT:
+      if(len(gM.savedStates) > 0):
+        with open('states.txt', 'w') as f:
+          f.write(str(gM.savedStates))
       pygame.quit()
       sys.exit()
   
