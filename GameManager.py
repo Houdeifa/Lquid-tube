@@ -1,10 +1,13 @@
 from Generator import Generator
 import pygame
+from UI import UI
 
 
 class GameManager:
     def __init__(self,gen):
         self.gen = gen
+        self.UI = UI(gen.screen,gen)
+        self.UI.createBackButton()
 
     def eventListner(self,events):
         pos = pygame.mouse.get_pos()
@@ -29,10 +32,12 @@ class GameManager:
                             self.gen.SelectionHat.select((self.gen.tube_boxes[i].selectedColor,self.gen.tube_boxes[i]))
                         else:
                             print("putColor test")
-                            if self.gen.tube_boxes[i].putColor(self.gen.SelectionHat.selectedColor):
+                            print("gen.SelectionHat.selectedTube.NBlockSelected => ",self.gen.SelectionHat.selectedTube.NBlockSelected)
+                            print("self.gen.SelectionHat.selectedColor => ",self.gen.SelectionHat.selectedColor)
+                            if self.gen.tube_boxes[i].putColors(self.gen.SelectionHat.selectedColor,self.gen.SelectionHat.selectedTube.NBlockSelected):
                                 print("str(Sel[0].selected[0][1].index) = " + str(self.gen.SelectionHat.selectedTube.index))
                                 print("i = " + str(i))
-                                self.gen.tube_boxes[self.gen.SelectionHat.selectedTube.index].removeColor()
+                                self.gen.tube_boxes[self.gen.SelectionHat.selectedTube.index].removeColors(self.gen.SelectionHat.selectedTube.NBlockSelected)
                                 Unselect_bool = False
                                 self.gen.tube_boxes[i].unsel()
                                 self.gen.tube_boxes[self.gen.SelectionHat.selectedTube.index].unsel()
@@ -46,9 +51,12 @@ class GameManager:
                     print("unselected")
                 print("str(tube_boxes[i].selected) = " + str(self.gen.tube_boxes[i].selectedColor))
                 print("str(Sel[0].selected) = " + str(self.gen.SelectionHat.isSelected))
+
+                if(self.UI.isBackBHovred(pos)):
+                    print("right Place")
     def update(self,events):
         for i in range(7*2):
-            self.gen.tube_boxes[i].check()
+            self.gen.tube_boxes[i].playingCheck()
         self.eventListner(events)
     def Play(self,source,destination_index):
         pass
@@ -56,5 +64,6 @@ class GameManager:
         for i in range(7*2):
             self.gen.tube_boxes[i].draw(self.gen.screen)
         self.gen.SelectionHat.draw(self.gen.screen)
+        self.UI.draw()
     
 

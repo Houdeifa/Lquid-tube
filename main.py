@@ -13,7 +13,7 @@ width, height = 640, 480
 screen = pygame.display.set_mode((width, height))
   
 # Game loop.
-gen = Generator(screen)
+gen = Generator(screen,True)
 gM = GameManager(gen)
 while True:
   screen.fill((0, 0, 0))

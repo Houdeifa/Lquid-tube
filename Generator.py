@@ -2,10 +2,12 @@ from Tube import Tube
 from Selector import Selector
 from pygame.locals import *
 import random
+import csv
+
 
 class Generator:
     Sel = []
-    def __init__(self,screen):
+    def __init__(self,screen,getConfigFile=False):
         width, height = screen.get_size()
         self.screen = screen
         self.widthBoxes = (width * 5) / 9
@@ -23,8 +25,22 @@ class Generator:
                 x = w * (i - 8) + (w / 7) * i + w / 14 + (width - self.widthBoxes) /2
                 y = h * 3
             self.tube_boxes.append(Tube(i,w,h,x,y))
-        ColorMatrix = self.generateRandomMatrix()
-        self.assignColors(ColorMatrix, self.tube_boxes)
+            if(getConfigFile == True):
+                file = open('colors.csv')
+                csvreader = csv.reader(file)
+                row_counter = 0
+                ColorMatrix = []
+                for row in csvreader:
+                    row = row[0].split(';')
+                    for col_index in range(12):
+                        ColorMatrix.append([])
+                        ColorMatrix[col_index].append(int(row[col_index]))
+                    row_counter +=1
+                file.close()
+                ColorMatrix = ColorMatrix[0:12]
+            else:
+                ColorMatrix = self.generateRandomMatrix()
+        self.assignColors(ColorMatrix)
         self.SelectionHat = Selector(self.tube_boxes[0].width/2,self.tube_boxes[0].height/6, self.tube_boxes[0].x + self.tube_boxes[0].width/4 , self.tube_boxes[0].y - self.tube_boxes[0].height/3)
         
         
@@ -55,6 +71,9 @@ class Generator:
                 #print("choosedColors : " + str(choosedColors))
                 #print("ColorMat : " + str(ColorMat))
         return ColorMat
-    def assignColors(self,ColorMatrix_s, tube_boxes_s):
+    def assignColors(self,ColorMatrix_s):
         for i in range(12):
-            tube_boxes_s[i].colors = ColorMatrix_s[i]
+             self.tube_boxes[i].colors = ColorMatrix_s[i]
+    def getColors(self):
+        for i in range(12):
+            self.ColorMatrix[i] = self.tube_boxes[i].colors
